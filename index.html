@@ -1,231 +1,213 @@
 <!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>文学史 4択</title>
+<title>文学史4択</title>
 <style>
-:root{--bg:#f6f7fb;--card:#fff;--b:#e5e7eb;--t:#0f172a;--m:#64748b;--pri:#4f46e5;--ok:#059669;--ng:#dc2626}
+:root{--bg:#f6f7fb;--c:#fff;--b:#e5e7eb;--t:#0f172a;--m:#64748b;--p:#4f46e5;--ok:#16a34a;--ng:#ef4444}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:16px/1.45 system-ui}
-.wrap{max-width:920px;margin:0 auto;padding:12px 12px calc(140px + env(safe-area-inset-bottom))}
-.top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-h1{font-size:16px;margin:4px 0}
-.card{background:var(--card);border:1px solid var(--b);border-radius:16px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-select,button{font:inherit}select{padding:10px 12px;border:1px solid var(--b);border-radius:14px;background:#fff}
-.btn{padding:10px 12px;border:1px solid var(--b);border-radius:14px;background:#fff}
-.btn.pri{background:var(--pri);border-color:transparent;color:#fff}
+.w{max-width:900px;margin:0 auto;padding:12px 12px calc(170px + env(safe-area-inset-bottom))}
+.card{background:var(--c);border:1px solid var(--b);border-radius:16px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+h1{font-size:15px;margin:2px 0 8px}
+.r{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+select,button,textarea{font:inherit}
+select,button{padding:10px 12px;border:1px solid var(--b);border-radius:14px;background:#fff}
+button.p{background:var(--p);color:#fff;border-color:transparent}
 .ta{width:100%;min-height:140px;border:1px solid var(--b);border-radius:14px;padding:10px;font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}
-.stat{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:var(--m);font-size:13px}
-.bar{flex:1;min-width:170px;height:10px;border-radius:999px;background:#eef2ff;border:1px solid #e0e7ff;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--pri)}
-.q{font-size:18px;margin:6px 0 0}
-.sub{color:var(--m);font-size:12px;margin-top:8px;white-space:pre-wrap}
+.s{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:var(--m);font-size:13px}
+.bar{flex:1;min-width:160px;height:10px;border-radius:999px;background:#eef2ff;border:1px solid #e0e7ff;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--p)}
+.q{font-size:18px;margin:8px 0 0;white-space:pre-wrap}
 .dock{position:fixed;left:0;right:0;bottom:0;padding:10px 10px calc(10px + env(safe-area-inset-bottom));
 background:rgba(246,247,251,.92);backdrop-filter:blur(10px);border-top:1px solid var(--b)}
-.opts{max-width:920px;margin:0 auto;display:grid;gap:8px;grid-template-columns:1fr}
-@media(min-width:720px){.opts{grid-template-columns:1fr 1fr}}
-.opt{width:100%;text-align:left;padding:14px 14px;border-radius:16px;border:1px solid var(--b);background:#fff;font-size:16px}
-.opt:active{transform:translateY(1px)}
-.k{display:inline-grid;place-items:center;width:1.6em;height:1.6em;border-radius:10px;border:1px solid var(--b);margin-right:.55em;color:var(--m);font:12px ui-monospace}
-.pill{display:inline-block;padding:2px 8px;border:1px solid var(--b);border-radius:999px;background:#fff;color:var(--m);font-size:12px}
-.ok{color:var(--ok)}.ng{color:var(--ng)}
+.opts{max-width:900px;margin:0 auto;display:grid;gap:8px}
+.opt{width:100%;text-align:left;padding:16px;border-radius:16px;border:1px solid var(--b);background:#fff;font-size:17px}
+.k{display:inline-grid;place-items:center;width:1.7em;height:1.7em;border-radius:10px;border:1px solid var(--b);margin-right:.55em;color:var(--m);font:12px ui-monospace}
+.opt.ok{border-color:rgba(22,163,74,.35);background:rgba(22,163,74,.10)}
+.opt.ng{border-color:rgba(239,68,68,.35);background:rgba(239,68,68,.10)}
+#toast{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:9;min-width:min(92vw,520px);
+padding:14px 16px;border-radius:16px;color:#fff;font-weight:800;display:none}
+#toast small{display:block;font-weight:650;opacity:.95;margin-top:6px}
 </style>
 
-<div class="wrap">
-  <div class="top">
-    <div>
-      <h1>文学史 4択（w最小→ランダム / 正解でw+1 / 目標T回）</h1>
-      <div class="row">
-        <span class="pill">スマホ親指最優先</span>
-        <span class="pill">同棚ダミー強化</span>
-        <span class="pill">入試形式ミックス</span>
-      </div>
-    </div>
-    <div class="row">
-      <label class="stat">T
-        <select id="T"><option value="1">1</option><option value="2" selected>2</option></select>
-      </label>
-      <button class="btn pri" id="go">開始/再開</button>
-      <button class="btn" id="rs">リセット</button>
-    </div>
-  </div>
+<div id="toast"></div>
 
-  <div class="card" style="margin-top:10px">
-    <div class="stat">
-      <span id="stat">ソース未読み込み</span>
-      <div class="bar"><i id="fill"></i></div>
-      <span class="pill">1〜4で回答</span>
+<div class="w">
+  <div class="card">
+    <h1>文学史4択（w最小→ランダム / 正解でw+1 / 目標T回）</h1>
+    <div class="r">
+      <label class="s">T <select id="T"><option>1</option><option selected>2</option></select></label>
+      <label class="s">難 <select id="D"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option></select></label>
+      <button class="p" id="go">開始/再開</button>
+      <button id="rs">リセット</button>
     </div>
+    <div class="s" style="margin-top:10px"><span id="st">0%</span><div class="bar"><i id="fi"></i></div><span id="meta">-</span></div>
     <textarea id="src" class="ta" placeholder="ここに｜区切りソースを貼る（1行=1データ）"></textarea>
-  </div>
-
-  <div class="card" id="quiz" style="margin-top:10px;display:none">
-    <div class="q" id="q">-</div>
-    <div class="sub" id="fb"></div>
+    <div class="q" id="q">ソースを貼って開始</div>
   </div>
 </div>
 
-<div class="dock" id="dock" style="display:none">
-  <div class="opts" id="opts"></div>
-</div>
+<div class="dock" id="dock" style="display:none"><div class="opts" id="opts"></div></div>
 
 <script>
-let I=[],W=[],T=2,cur=-1,ANS="",KEY="",LS="bungaku_w_mobile_v2";
-const $=id=>document.getElementById(id),R=a=>a[(Math.random()*a.length)|0],S=a=>a.sort(()=>Math.random()-.5),U=a=>[...new Set(a)];
-const norm=s=>s.replace(/\r/g,"").trim();
+let IT=[],F=[],W={},T=2,D=2,KEY="",ANS="",LK="",LOCK=0,Q=null,SK=0,REV=0,ARM=0;
+const $=id=>document.getElementById(id),U=a=>[...new Set(a)],S=a=>a.sort(()=>Math.random()-.5),R=a=>a[(Math.random()*a.length)|0];
+const LS="bungaku_v3",LSS="bungaku_src_v3",dash=s=>(s||"").replace(/[―—−‐-–－]/g,"-").replace(/\uFFFD/g,"").replace(/\s+/g," ").trim();
+const na=s=>!s||s==="-"||s==="作者不詳"||s==="不詳"||s==="不明";
 const H=s=>{let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return h+""};
-const splitWorks=s=>s.split(/[／/]/).map(x=>x.trim()).filter(Boolean);
-const cleanLine=l=>!/^(※|ウィキ|Wikipedia)/.test(l)&&!/^\S+\s*\(.+\)$/.test(l);
+const splitW=s=>dash(s).split(/[／/]/).map(dash).filter(x=>x&&!na(x));
+const tags=s=>dash(s).replace(/＝/g," ").replace(/[（）()]/g," ").split(/[／/・,、\s]+/).map(dash).filter(x=>x&&!na(x));
+const eraO={"上代":0,"平安":1,"中古":1,"鎌倉":2,"中世":3,"室町":3,"江戸":4,"近世":4,"明治":5,"大正":6,"昭和前期":7,"戦後":8,"現代":9};
+const near=e=>{let v=eraO[e];if(v==null)return[];let ks=Object.keys(eraO).sort((a,b)=>eraO[a]-eraO[b]);let i=ks.indexOf(e),o=[];for(let d=1;d<5;d++){ks[i-d]&&o.push(ks[i-d]);ks[i+d]&&o.push(ks[i+d])}return o};
+let P={A:[],W:[],E:[],aE:{},aG:{},aT:{},wE:{},wG:{},wT:{},wA:{},aW:{}},add=(m,k,v)=>(m[k]=m[k]||[]).push(v);
 
-let P={}; // pools
-
-function parse(src){
-  let lines=norm(src).split("\n").map(x=>x.trim()).filter(x=>x&&x.includes("｜")&&cleanLine(x));
-  I=lines.map((l,i)=>{
-    let [era,genre,tag,author,work,note]=l.split("｜").map(x=>x.trim());
-    return {i,era,genre,tag,author,work,note,l,works:work&&work!=="-"?splitWorks(work):[]};
-  }).filter(x=>(x.author&&x.author!=="-")||(x.work&&x.work!=="-")||(x.tag&&x.tag!=="-"));
-  buildPools();
-}
+document.addEventListener("click",e=>{
+  if(!(REV&&ARM)) return;
+  e.preventDefault(); e.stopPropagation();
+  clearTimeout(SK); REV=0; LOCK=0; show();
+},true);
 
 function buildPools(){
-  let allA=U(I.map(x=>x.author).filter(x=>x&&x!=="-"));
-  let allW=U(I.flatMap(x=>x.works).filter(Boolean));
-  let allE=U(I.map(x=>x.era).filter(Boolean));
-  P={allA,allW,allE,
-    aByEra:{},aByGenre:{},aByTag:{},
-    wByEra:{},wByGenre:{},wByTag:{},
-    wByAuthor:{}, aByWork:{}
-  };
-  for(let x of I){
-    let e=x.era,g=x.genre,t=x.tag,a=x.author,w=x.works;
-    if(a&&a!=="-"){
-      (P.aByEra[e]=P.aByEra[e]||[]).push(a);
-      (P.aByGenre[g]=P.aByGenre[g]||[]).push(a);
-      if(t&&t!=="-")(P.aByTag[t]=P.aByTag[t]||[]).push(a);
-    }
-    if(w.length){
-      (P.wByEra[e]=P.wByEra[e]||[]).push(...w);
-      (P.wByGenre[g]=P.wByGenre[g]||[]).push(...w);
-      if(t&&t!=="-")(P.wByTag[t]=P.wByTag[t]||[]).push(...w);
-      if(a&&a!=="-")(P.wByAuthor[a]=P.wByAuthor[a]||[]).push(...w);
-      for(let ww of w)(P.aByWork[ww]=P.aByWork[ww]||[]).push(a);
+  P={A:[],W:[],E:[],aE:{},aG:{},aT:{},wE:{},wG:{},wT:{},wA:{},aW:{}};
+  for(let x of IT){
+    let {era,gen,author,work,ts}=x;
+    if(era&&!na(era)) P.E.push(era);
+    if(author&&!na(author)){P.A.push(author);add(P.aE,era,author);add(P.aG,gen,author);for(let t of ts)add(P.aT,t,author)}
+    if(work&&!na(work)){P.W.push(work);add(P.wE,era,work);add(P.wG,gen,work);for(let t of ts)add(P.wT,t,work);if(author&&!na(author)){add(P.wA,author,work);add(P.aW,work,author)}}
+  }
+  for(let k of ["A","W","E"]) P[k]=U(P[k]);
+  for(let m of ["aE","aG","aT","wE","wG","wT","wA","aW"]) for(let k in P[m]) P[m][k]=U(P[m][k].filter(v=>v&&!na(v)));
+}
+function buildFacts(){
+  F=[]; const push=(k,o)=>F.push({k,...o});
+  for(let w of P.W){
+    let as=U((P.aW[w]||[]).filter(x=>!na(x)));
+    if(as.length===1){
+      let a=as[0], x=IT.find(z=>z.work===w&&z.author===a)||IT.find(z=>z.work===w)||{};
+      if(!na(a)) push("WA|"+w,{t:"WA",w,ans:a,era:x.era||"",gen:x.gen||"",tag:(x.ts?.[0]||"")});
+      if(x.era&&!na(x.era)) push("WE|"+w,{t:"WE",w,ans:x.era,era:x.era,gen:x.gen||"",tag:(x.ts?.[0]||"")});
+      let ns=U((x.ns||[]).filter(n=>n.length>=2&&n.length<=12&&!na(n)));
+      for(let n of ns.slice(0,2)) push("NW|"+n+"|"+w,{t:"NW",n,w,ans:w,era:x.era||"",gen:x.gen||"",tag:(x.ts?.[0]||"")});
     }
   }
-  // unique化
-  for(let k of ["aByEra","aByGenre","aByTag","wByEra","wByGenre","wByTag","wByAuthor","aByWork"])
-    for(let kk in P[k]) P[k][kk]=U(P[k][kk].filter(x=>x&&x!=="-"));
+  for(let a of P.A){
+    let ws=U((P.wA[a]||[]).filter(x=>!na(x)));
+    if(ws.length>=2){let x=IT.find(z=>z.author===a)||{};push("AW|"+a,{t:"AW",a,ws,ans:R(ws),era:x.era||"",gen:x.gen||"",tag:(x.ts?.[0]||"")})}
+  }
+  for(let t in P.aT){
+    let as=U(P.aT[t].filter(x=>!na(x)));
+    if(as.length>=2){let x=IT.find(z=>(z.ts||[]).includes(t)&&z.author&&!na(z.author))||{};push("TA|"+t,{t:"TA",tag:t,ans:R(as),era:x.era||"",gen:x.gen||""})}
+  }
+  F=F.filter(f=>!na(f.ans));
 }
-
-function loadState(k){
-  let o={}; try{o=JSON.parse(localStorage.getItem(LS)||"{}")}catch(e){}
-  let a=(o[k]?.w)||[];
-  return a.slice(0,I.length).concat(Array(Math.max(0,I.length-a.length)).fill(0));
+function parse(src){
+  let lines=src.split("\n").map(dash).map(s=>s.replace(/\r/g,"").trim()).filter(l=>l&&l.includes("｜")&&!/^(※|ウィキ|Wikipedia|ほかに)/.test(l)&&!/件$/.test(l));
+  IT=[];
+  for(let l of lines){
+    let a=l.split("｜").map(dash); if(a.length<6) continue;
+    let [era,gen,tag,author,work,note]=a;
+    let ws=splitW(work), ts=tags(tag), ns=tags(note);
+    for(let w of ws) IT.push({era,gen,tag,author,work:w,ts,ns,note});
+  }
+  buildPools(); buildFacts();
 }
-function saveState(){
-  let o={}; try{o=JSON.parse(localStorage.getItem(LS)||"{}")}catch(e){}
-  o[KEY]={w:W,ts:Date.now()}; localStorage.setItem(LS,JSON.stringify(o));
-}
-
+function loadAll(){let o={};try{o=JSON.parse(localStorage.getItem(LS)||"{}")}catch(e){}return o}
+function saveAll(o){localStorage.setItem(LS,JSON.stringify(o))}
+function loadW(){let o=loadAll();return o[KEY]||{}}
+function saveW(){let o=loadAll();o[KEY]=W;saveAll(o)}
 function prog(){
-  let n=I.length, m=W.filter(x=>x>=T).length, sm=W.reduce((s,x)=>s+Math.min(x,T),0)/(n*T||1);
-  $("stat").textContent=`${m}/${n}（${(m*100/(n||1)).toFixed(1)}%） 途中:${(sm*100).toFixed(1)}% minw=${Math.min(...W,0)}`;
-  $("fill").style.width=(m*100/(n||1))+"%";
-  return n && m===n;
+  let ks=F.map(f=>f.k), n=ks.length||1;
+  let done=ks.filter(k=>(W[k]||0)>=T).length;
+  let part=ks.reduce((s,k)=>s+Math.min(W[k]||0,T),0)/(n*T);
+  $("st").textContent=`${(part*100).toFixed(1)}%  (${done}/${n})`;
+  $("fi").style.width=(part*100)+"%";
+  $("meta").textContent=`minw=${Math.min(...ks.map(k=>W[k]||0),0)}`;
+  return done===n && n>0;
 }
-
-function pick(){
-  let min=Math.min(...W), idx=[];
-  for(let i=0;i<I.length;i++) if(W[i]===min) idx.push(i);
-  return R(idx);
-}
-
-// 同棚ダミー生成（優先: era -> genre -> tag -> global）
-function distractors(type,x,ans){
-  let a=[];
-  const take=(pool)=>{for(let v of S(U(pool||[]))) if(v&&v!==ans&&!a.includes(v)&&a.length<3) a.push(v);};
-  if(type==="A"){ // author choices
-    take(P.aByEra[x.era]); take(P.aByGenre[x.genre]); if(x.tag&&x.tag!=="-") take(P.aByTag[x.tag]); take(P.allA);
-  }else if(type==="W"){ // work choices
-    take(P.wByEra[x.era]); take(P.wByGenre[x.genre]); if(x.tag&&x.tag!=="-") take(P.wByTag[x.tag]);
-    if(x.author&&x.author!=="-") take(P.wByAuthor[x.author]);
-    take(P.allW);
-  }else if(type==="E"){ // era choices (入試の紛らわしさ: 近い並びを優先)
-    let order=["上代","平安","中古","鎌倉","中世","室町","近世","江戸","近代","明治","大正","昭和前期","昭和","戦後","現代"];
-    let i=order.indexOf(ans), near=[];
-    if(i>-1){ for(let d=1;d<6;d++){ if(order[i-d]) near.push(order[i-d]); if(order[i+d]) near.push(order[i+d]); } }
-    take(near); take(P.allE);
+function take(arr,a){for(let v of S(U(arr||[]))) if(v&&!na(v)&&v!==ANS&&!a.includes(v)&&a.length<3) a.push(v)}
+function pickPool(kind,f){
+  let a=[],era=f.era||"",gen=f.gen||"",tag=f.tag||"";
+  if(kind==="A"){
+    if(D>=1) take(P.aE[era],a);
+    if(D>=2) take(P.aG[gen],a);
+    if(D>=3&&tag) take(P.aT[tag],a);
+    if(D>=3) for(let e of near(era)) take(P.aE[e],a);
+    take(P.A,a);
+  }else if(kind==="W"){
+    if(D>=1) take(P.wE[era],a);
+    if(D>=2) take(P.wG[gen],a);
+    if(D>=3&&tag) take(P.wT[tag],a);
+    if(D>=3&&f.a) take(P.wA[f.a],a);
+    if(D>=3) for(let e of near(era)) take(P.wE[e],a);
+    take(P.W,a);
+  }else{
+    take(near(ANS),a); take(P.E,a);
   }
   return a;
 }
-
-// 入試形式ミックス（重み：作品↔作者を厚め）
-function makeQ(x){
-  let modes=[];
-  if(x.works.length && x.author && x.author!=="-"){ modes.push("W2A","A2W"); }
-  if(x.tag && x.tag!=="-" && x.author && x.author!=="-"){ modes.push("T2A"); }
-  if(x.works.length){ modes.push("W2E"); }
-  // 作品↔作者を多めに出す
-  let pickMode=R(modes.concat(modes).concat(["W2A","A2W"]).filter(Boolean));
-  let q="",ans="",opts=[],meta=`${x.era}｜${x.genre}｜${x.tag}｜${x.author}｜${x.work}｜${x.note}`;
-  if(pickMode==="W2A"){
-    let w=R(x.works); q=`『${w}』の作者は？`; ans=x.author;
-    opts=S([ans,...distractors("A",x,ans)]);
-  }else if(pickMode==="A2W"){
-    q=`${x.author} の代表作は？`; ans=R(x.works);
-    opts=S([ans,...distractors("W",x,ans)]);
-  }else if(pickMode==="T2A"){
-    q=`「${x.tag}」の作家として適切なのは？`; ans=x.author;
-    opts=S([ans,...distractors("A",x,ans)]);
-  }else{ // W2E
-    let w=R(x.works); q=`『${w}』の時代は？`; ans=x.era;
-    opts=S([ans,...distractors("E",x,ans)]);
-  }
-  // 4択に整形（足りないとき全体補完）
+function makeQ(f){
+  let q,opts=[];
+  if(f.t==="WA"){q=`『${f.w}』の作者は？`;ANS=f.ans;opts=S([ANS,...pickPool("A",f)])}
+  else if(f.t==="AW"){q=`${f.a} の代表作として適切なのは？`;ANS=f.ans;opts=S([ANS,...pickPool("W",{...f,a:f.a})])}
+  else if(f.t==="TA"){q=`「${f.tag}」に関連する作家は？`;ANS=f.ans;opts=S([ANS,...pickPool("A",f)])}
+  else if(f.t==="NW"){q=`次のキーワードから連想される作品は？\n「${f.n}」`;ANS=f.ans;opts=S([ANS,...pickPool("W",f)])}
+  else {q=`『${f.w}』の時代は？`;ANS=f.ans;opts=S([ANS,...pickPool("E",f)])}
+  opts=opts.filter(v=>v&&!na(v));
   while(opts.length<4){
-    let fill=(q.includes("作者")||q.includes("作家"))?R(P.allA):q.includes("時代")?R(P.allE):R(P.allW);
-    if(fill&&fill!==ans&&!opts.includes(fill)) opts.push(fill);
+    let v=q.includes("作者")||q.includes("作家")?R(P.A):q.includes("時代")?R(P.E):R(P.W);
+    if(v&&!na(v)&&v!==ANS&&!opts.includes(v)) opts.push(v)
   }
-  return {q,ans,opts:opts.slice(0,4),meta};
+  return {q,opts:opts.slice(0,4),k:f.k};
 }
-
+function pickFact(){
+  let min=1e9,c=[];
+  for(let f of F){let w=W[f.k]||0; if(w<min){min=w;c=[f]} else if(w===min)c.push(f)}
+  return R(c);
+}
+function toast(ok,ans){
+  let t=$("toast");
+  t.style.background=ok?"var(--ok)":"var(--ng)";
+  t.innerHTML=(ok?"○ 正解":"× 不正解")+`<small>答え：${ans}（タップで次へ）</small>`;
+  t.style.display="block";
+  clearTimeout(toast._); toast._=setTimeout(()=>t.style.display="none",1200);
+}
 function render(Q){
-  $("quiz").style.display="block"; $("dock").style.display="block";
-  $("q").textContent=Q.q; $("fb").textContent="";
-  ANS=Q.ans;
+  $("dock").style.display="block";
+  $("q").textContent=Q.q;
   $("opts").innerHTML=Q.opts.map((v,i)=>`<button class="opt" data-v="${v}"><span class="k">${i+1}</span>${v}</button>`).join("");
-  [...document.querySelectorAll(".opt")].forEach(b=>b.onclick=()=>judge(b.dataset.v,Q));
+  [...document.querySelectorAll(".opt")].forEach(b=>b.onclick=e=>{e.stopPropagation();judge(b,Q)});
 }
-
 function show(){
-  if(prog()){
-    $("q").textContent="✅ クリア！";
-    $("fb").textContent="全データが目標回数に到達。";
-    $("opts").innerHTML="";
-    return;
-  }
-  cur=pick();
-  render(makeQ(I[cur]));
+  REV=0; ARM=0;
+  if(prog()){ $("q").textContent="✅ クリア！"; $("opts").innerHTML=""; return; }
+  let f=pickFact(); LK=f.k; Q=makeQ(f); render(Q);
 }
+function judge(btn,Q){
+  if(LOCK) return; LOCK=1;
+  let v=btn.dataset.v, ok=v===ANS;
+  [...document.querySelectorAll(".opt")].forEach(b=>{
+    let bv=b.dataset.v;
+    if(bv===ANS) b.classList.add("ok");
+    else if(bv===v) b.classList.add("ng");
+    b.disabled=true;
+  });
+  if(ok) W[LK]=(W[LK]||0)+1;
+  saveW(); toast(ok,ANS);
 
-function judge(v,Q){
-  let ok=v===Q.ans;
-  if(ok) W[cur]+=1;
-  saveState();
-  $("fb").innerHTML=`<span class="${ok?"ok":"ng"}">${ok?"○ 正解":"×"} </span> w=${W[cur]}  /  ${Q.meta}`;
-  setTimeout(show,240);
+  // 答え合わせ中：タップでスキップ（同クリック即スキップ防止でARM遅延）
+  clearTimeout(SK); REV=1; ARM=0; setTimeout(()=>ARM=1,0);
+  SK=setTimeout(()=>{REV=0; LOCK=0; show();},1200);
 }
-
 function start(){
-  T=+$("T").value;
-  let s=norm($("src").value);
-  if(!s){ $("stat").textContent="ソースを貼って開始"; return; }
+  T=+$("T").value; D=+$("D").value;
+  let s=dash($("src").value);
+  localStorage.setItem(LSS,s);
   KEY=H(s);
   parse(s);
-  W=loadState(KEY);
+  W=loadW();
   prog(); show();
 }
-
 $("go").onclick=start;
-$("rs").onclick=()=>{ if(!KEY) KEY=H(norm($("src").value)); W=Array(I.length).fill(0); saveState(); prog(); show(); };
-addEventListener("keydown",e=>{
-  let k=+e.key; if(k>=1&&k<=4){ let b=[...document.querySelectorAll(".opt")][k-1]; b&&b.click(); }
-});
+$("rs").onclick=()=>{let s=dash($("src").value); localStorage.setItem(LSS,s); KEY=H(s); W={}; saveW(); show();};
+$("src").value=localStorage.getItem(LSS)||"";
+if($("src").value.trim()) setTimeout(start,60);
+addEventListener("keydown",e=>{let k=+e.key;if(k>=1&&k<=4){let b=[...document.querySelectorAll(".opt")][k-1]; b&&b.click();}});
 </script>
+```0
